@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.PersonInput;
 import com.example.demo.model.Person;
+import com.example.demo.model.UserRole;
 import com.example.demo.repositories.PersonRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,9 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "BasicAuth")
     private Person createNewPerson(@RequestBody PersonInput personInput) {
-        Person newPerson = new Person();
-        newPerson.setUsername(personInput.getUsername());
         String hashedPassword = passwordEncoder.encode(personInput.getPassword());
-        newPerson.setPasswordHash(hashedPassword);
+        Person newPerson = new Person(personInput.getUsername(), hashedPassword, UserRole.USER);
+
         return personRepository.save(newPerson);
     }
 }

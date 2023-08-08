@@ -30,10 +30,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         Person person = personOptional.get();
 
-        return new User(person.getUsername(), person.getPasswordHash(), getAuthorities());
+        return new User(person.getUsername(), person.getPasswordHash(), getAuthorities(person));
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    private Collection<? extends GrantedAuthority> getAuthorities(Person person) {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + person.getRole().name()));
     }
 }

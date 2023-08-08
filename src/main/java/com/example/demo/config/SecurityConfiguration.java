@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.model.UserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +30,7 @@ public class SecurityConfiguration {
                                     antMatcher("/h2-console/**")).permitAll()
                             .requestMatchers(antMatcher(HttpMethod.GET, "/books")).permitAll()
                             .requestMatchers(antMatcher(HttpMethod.GET, "/books/**")).permitAll()
+                            .requestMatchers(antMatcher(HttpMethod.POST, "/persons")).hasRole(UserRole.ADMIN.name())
                             .anyRequest().authenticated();
                 })
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)) // This so embedded frames in h2-console are working
